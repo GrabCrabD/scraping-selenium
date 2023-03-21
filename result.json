@@ -1,0 +1,74 @@
+[
+  {
+    "name": "МТС",
+    "price": 950,
+    "descrip": null,
+    "sms": null,
+    "calls": null,
+    "internet": null,
+    "details": null
+  },
+  {
+    "name": "МЫ",
+    "price": 990,
+    "descrip": null,
+    "sms": null,
+    "calls": null,
+    "internet": null,
+    "details": null
+  },
+  {
+    "name": "НЕТАРИФ",
+    "price": 749,
+    "descrip": null,
+    "sms": null,
+    "calls": null,
+    "internet": null,
+    "details": null
+  },
+  {
+    "name": "Тарифище",
+    "price": 790,
+    "descrip": null,
+    "sms": null,
+    "calls": null,
+    "internet": null,
+    "details": null
+  },
+  {
+    "name": "НЕТАРИФНЕТАРИФ",
+    "price": 690,
+    "descrip": null,
+    "sms": null,
+    "calls": null,
+    "internet": null,
+    "details": null
+  },
+  {
+    "name": "МТС",
+    "price": 149,
+    "descrip": null,
+    "sms": null,
+    "calls": null,
+    "internet": null,
+    "details": null
+  },
+  {
+    "name": "ULTRA",
+    "price": 2900,
+    "descrip": null,
+    "sms": null,
+    "calls": null,
+    "internet": null,
+    "details": null
+  },
+  {
+    "name": "Smart",
+    "price": 590,
+    "descrip": null,
+    "sms": null,
+    "calls": null,
+    "internet": null,
+    "details": null
+  }
+]
