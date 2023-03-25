@@ -21,13 +21,6 @@ class Plan:
     internet: Optional[int] = None
 
 
-class CustomEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if obj is None:
-            return 'No info'
-        return json.JSONEncoder.default(self, obj)
-
-
 def get_cards_online():
     options = webdriver.ChromeOptions()
     # options.add_argument(
@@ -145,10 +138,9 @@ def main():
 
     with open('result.json', 'w', encoding='utf8') as file:
         json.dump(result, file, ensure_ascii=False,
-                  indent=2, cls=CustomEncoder)
+                  indent=2)
 
 
-# __ - dunders
-# Executes only for `python -m kokolala.py`
+# __ - dunders`
 if __name__ == '__main__':
     main()
