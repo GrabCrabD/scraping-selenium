@@ -60,11 +60,11 @@ def get_cards_online():
     return cards, titles, descrips
 
 
-def make_plan(card: str, title: str, description: str) -> Optional[Plan]:
-    price = parse_price(card)
+def make_plan(card: str, title: str, descrip: str) -> Optional[Plan]:
 
     # убираем лишние символы переноса строк
-    descrip = re.sub(pattern='\n', repl=' ', string=description)
+    card = ' '.join(card.split())
+    price = parse_price(card)
 
     internet = parse_internet(card)
     calls, sms = parse_sms_and_calls(card)
@@ -111,12 +111,13 @@ def parse_sms_and_calls(card) -> tuple[Optional[int], Optional[int]]:
 
 def parse_price(card) -> Optional[int]:
     price_match = re.search(
-        pattern=r'(?i)(\d+)\s(₽/мес|руб\./мес\.)',
+        pattern=r'(?i)(\d+)\s₽/мес|(\d+)\sруб\./мес\.',
         string=card
     )
+    price = None
     if price_match:
-        return int(price_match.group(1))
-    return
+        price = find_number(price_match.groups())
+    return price
 
 
 def find_number(a):
