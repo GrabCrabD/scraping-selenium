@@ -1,10 +1,11 @@
+from dataclasses import dataclass, asdict
+import json
+import re
+from typing import Optional
+
+from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from bs4 import BeautifulSoup
-from dataclasses import dataclass, asdict
-from typing import Optional
-import re
-import json
 
 # url = "https://moskva.mts.ru/personal"
 url = "https://moskva.mts.ru/personal/mobilnaya-svyaz/tarifi/vse-tarifi/dla-smartfona"
@@ -15,9 +16,16 @@ class Plan:
     name: str
     price: int
     descrip: Optional[str] = None
-    sms: str = None
-    calls: str = None
-    internet: str = None
+    sms: Optional[int] = None
+    calls: Optional[int] = None
+    internet: Optional[int] = None
+
+
+class CustomEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if obj is None:
+            return 'No info'
+        return json.JSONEncoder.default(self, obj)
 
 
 def get_cards_online():
@@ -54,94 +62,90 @@ def get_cards_online():
         driver.close()
         driver.quit()
 
-    return soup.findAll('div', class_='tariff-list__item'), titles, descrips
+    cards = [i.text for i in soup.findAll('div', class_='tariff-list__item')]
+
+    return cards, titles, descrips
 
 
-def make_plan(card: str, title, description) -> Optional[Plan]:
+def make_plan(card: str, title: str, description: str) -> Optional[Plan]:
+    price = parse_price(card)
 
-    all_words = card.split()
-
-    name = title
     # убираем лишние символы переноса строк
     descrip = re.sub(pattern='\n', repl=' ', string=description)
-    price = None
-    calls = "No info"
-    internet = "No info"
-    sms = "No info"
-    for index, word in enumerate(all_words):
-        internet_match = re.search(
-            flags=0,
-            pattern=r'(?i)(\d+)\sГБ',
-            string=card
-        )
-        if internet_match:
-            internet = internet_match.group()
 
-        if name == 'Тарифище':  # дикий костыль
-            sms = '700 SMS'
-            calls = '700 минут'
-            print(all_words)
-        else:
-            sms_match = re.search(
-                flags=0,
-                pattern=r'(?i)(\d+)\ssms|Сообщения(\d+)|SMS(\d+)',
-                string=card
-            )
-            if sms_match:
-                sms = sms_match.group()
+    internet = parse_internet(card)
+    calls, sms = parse_sms_and_calls(card)
 
-            calls_match = re.search(
-                flags=0,
-                pattern=r'(?i)(\d+)\sминут|Минуты(\d+)|(\d+)\sмин',
-                string=card
-            )
-            if calls_match:
-                calls = calls_match.group()
+    return Plan(title, price, descrip, internet=internet, sms=sms, calls=calls)
 
-        # if '/мес' in x:
-        if word in ('₽/мес', 'руб./мес.'):
-            price = int(all_words[index-1])
-            break
 
-    if price is None:
-        return
+def parse_internet(card) -> Optional[int]:
+    internet_match = re.search(
+        pattern=r'(?i)(\d+)\sГБ',
+        string=card
+    )
+    if internet_match:
+        return int(internet_match.group(1))
+    return
 
-    return Plan(name, price, descrip, internet=internet, sms=sms, calls=calls)
+
+def parse_sms_and_calls(card) -> tuple[Optional[int], Optional[int]]:
+    sms_and_call_special = re.search(
+        pattern=r'(?i)минуты и sms(\d+)/(\d+)',
+        string=card
+    )
+    if sms_and_call_special:
+        return tuple(int(x) for x in sms_and_call_special.groups())
+
+    sms = None
+    sms_match = re.search(
+        pattern=r'(?i)(\d+)\ssms|Сообщения(\d+)|SMS(\d+)',
+        string=card
+    )
+    if sms_match:
+        sms = find_number(sms_match.groups())
+
+    calls = None
+    calls_match = re.search(
+        pattern=r'(?i)(\d+)\sминут|Минуты(\d+)|(\d+)\sмин',
+        string=card
+    )
+    if calls_match:
+        calls = find_number(calls_match.groups())
+
+    return calls, sms
+
+
+def parse_price(card) -> Optional[int]:
+    price_match = re.search(
+        pattern=r'(?i)(\d+)\s(₽/мес|руб\./мес\.)',
+        string=card
+    )
+    if price_match:
+        return int(price_match.group(1))
+    return
+
+
+def find_number(a):
+    for i in a:
+        if str(i).isnumeric():
+            return int(i)
 
 
 def main():
     info_cards, titles, descrips = get_cards_online()
-    # list_of_blocks: list[tuple(str, str)] = parse_into_blocks(info_cards)
-    # [
-    #     (title, other),
-    #     (title, other),
-    #     (title, other),
-    #     (title, other),
-    #     (title, other),
-    # ]
-    # for title, other in list_of_blocks:
-    #     kwargs = parse_other(other)
-    #     plan = Plan(
-    #        title=title,
-    #        **kwargs
-    #     )
-
-    # with open('soup_log.txt', 'w') as file:
-    #     for l in info_cards:
-    #         file.writelines(l)
-    #         file.write('\n')
-
-    with open('soup_log.txt', 'r') as file:
-        info_cards = file.readlines()
 
     result = []
-    for index, card in enumerate(info_cards):
-        plan = make_plan(card, titles[index], descrips[index])
+    for card, title, description in zip(info_cards, titles, descrips):
+        # import ipdb
+        # ipdb.set_trace()
+        plan = make_plan(card, title, description)
         if plan is not None:
             result.append(asdict(plan))
 
     with open('result.json', 'w', encoding='utf8') as file:
-        json.dump(result, file, ensure_ascii=False, indent=2)
+        json.dump(result, file, ensure_ascii=False,
+                  indent=2, cls=CustomEncoder)
 
 
 # __ - dunders

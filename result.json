@@ -1,66 +1,74 @@
 [
   {
     "name": "МТС Доступ",
-    "price": 950,
+    "price": null,
     "descrip": "Раз в месяц оплатили – и забыли. Просто общайтесь, не считая минуты и гигабайты",
-    "sms": "No info",
-    "calls": "No info",
-    "internet": "No info"
+    "sms": null,
+    "calls": null,
+    "internet": null
   },
   {
     "name": "МЫ МТС",
-    "price": 990,
+    "price": null,
     "descrip": "Семейная подписка с общими пакетами минут и гигабайт",
-    "sms": "500 SMS",
-    "calls": "1200 минут",
-    "internet": "240 ГБ"
+    "sms": 500,
+    "calls": 1200,
+    "internet": 240
   },
   {
     "name": "НЕТАРИФ МАТЧ ПРЕМЬЕР",
     "price": 749,
     "descrip": "Готовое предложение для футбольных болельщиков и любителей кино",
-    "sms": "No info",
-    "calls": "Минуты300",
-    "internet": "20 Гб"
+    "sms": null,
+    "calls": 300,
+    "internet": 20
   },
   {
     "name": "Тарифище",
-    "price": 790,
+    "price": null,
     "descrip": "Звонки на все сети России",
-    "sms": "700 SMS",
-    "calls": "700 минут",
-    "internet": "30 ГБ"
+    "sms": 700,
+    "calls": 700,
+    "internet": 30
   },
   {
     "name": "НЕТАРИФ",
     "price": 690,
     "descrip": "Подписка на связь, музыку, онлайн-кинотеатры и другие сервисы — выберите то, что нужно именно вам",
-    "sms": "Сообщения50200",
-    "calls": "Минуты400",
-    "internet": "20 Гб"
+    "sms": 50200,
+    "calls": 400,
+    "internet": 20
   },
   {
     "name": "МТС Junior",
-    "price": 149,
+    "price": null,
     "descrip": "Чтобы дети делали то, что им нравится, а родители были спокойны",
-    "sms": "No info",
-    "calls": "No info",
-    "internet": "No info"
+    "sms": null,
+    "calls": null,
+    "internet": null
   },
   {
     "name": "ULTRA",
-    "price": 2900,
+    "price": null,
     "descrip": "Много минут и интернета",
-    "sms": "No info",
-    "calls": "5000 минут",
-    "internet": "60 ГБ"
+    "sms": null,
+    "calls": 5000,
+    "internet": 60
+  },
+  {
+    "name": "Персональный",
+    "price": null,
+    "descrip": "Мы рассчитываем и предлагаем вам тариф на основе именно вашего:",
+    "sms": null,
+    "calls": null,
+    "internet": null
   },
   {
     "name": "Smart",
-    "price": 590,
+    "price": null,
     "descrip": "Базовый пакет интернета и минут",
-    "sms": "No info",
-    "calls": "250 мин",
-    "internet": "5 ГБ"
+    "sms": null,
+    "calls": 250,
+    "internet": 5
   }
 ]
