@@ -62,7 +62,7 @@ def get_cards_online():
 
 def make_plan(card: str, title: str, descrip: str) -> Optional[Plan]:
 
-    # убираем лишние символы переноса строк
+    # убираем лишние символы переноса строк, пробелов и тп
     card = ' '.join(card.split())
     price = parse_price(card)
 
@@ -92,7 +92,7 @@ def parse_sms_and_calls(card) -> tuple[Optional[int], Optional[int]]:
 
     sms = None
     sms_match = re.search(
-        pattern=r'(?i)(\d+)\ssms|Сообщения(\d+)|SMS(\d+)',
+        pattern=r'(?i)(\d+)\ssms|Сообщения(\d\d)|SMS(\d+)',
         string=card
     )
     if sms_match:
