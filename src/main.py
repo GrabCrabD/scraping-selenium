@@ -43,7 +43,7 @@ def get_cards_online():
         for title in driver.find_elements(By.CLASS_NAME, "tariff-card__title"):
             titles.append(title.text.strip())
 
-        # описание тарифов
+        # описания тарифов
         descrips = []
         for descrip in driver.find_elements(By.CLASS_NAME, "tariff-card__text"):
             descrips.append(descrip.text.strip())
