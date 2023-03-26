@@ -37,10 +37,13 @@ def get_cards_online():
         #     By.XPATH, '/html/body/div[2]/div/div[1]/section/div/div/mts-tariffs-page/div[2]/div/div/div/mts-tariffs-actual/div/div[2]/mts-tariffs/div[2]/button').click()
 
         # time.sleep(3)
+
+        # названия тарифов
         titles = []
         for title in driver.find_elements(By.CLASS_NAME, "tariff-card__title"):
             titles.append(title.text.strip())
 
+        # описание тарифов
         descrips = []
         for descrip in driver.find_elements(By.CLASS_NAME, "tariff-card__text"):
             descrips.append(descrip.text.strip())
@@ -53,6 +56,7 @@ def get_cards_online():
         driver.close()
         driver.quit()
 
+    # получаем текст всех карточек с тарифами
     cards = [i.text for i in soup.findAll('div', class_='tariff-list__item')]
 
     return cards, titles, descrips
@@ -62,8 +66,8 @@ def make_plan(card: str, title: str, descrip: str) -> Optional[Plan]:
 
     # убираем лишние символы переноса строк, пробелов и тп
     card = ' '.join(card.split())
-    price = parse_price(card)
 
+    price = parse_price(card)
     internet = parse_internet(card)
     calls, sms = parse_sms_and_calls(card)
 
