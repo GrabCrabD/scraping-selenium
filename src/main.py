@@ -7,7 +7,6 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-# url = "https://moskva.mts.ru/personal"
 url = "https://moskva.mts.ru/personal/mobilnaya-svyaz/tarifi/vse-tarifi/dla-smartfona"
 
 
@@ -27,16 +26,6 @@ def get_cards_online():
 
     try:
         driver.get(url=url)
-
-        # element = driver.find_element(
-        #     By.XPATH, '/html/body/div[2]/div/div[1]/mts-main-page/mts-widget-zone[1]/mts-navigation-widget/section/div/div/div/a[1]').click()
-
-        # driver.execute_script("window.scrollBy(0,3300)")
-
-        # driver.find_element(
-        #     By.XPATH, '/html/body/div[2]/div/div[1]/section/div/div/mts-tariffs-page/div[2]/div/div/div/mts-tariffs-actual/div/div[2]/mts-tariffs/div[2]/button').click()
-
-        # time.sleep(3)
 
         # названия тарифов
         titles = []
@@ -133,8 +122,6 @@ def main():
 
     result = []
     for card, title, description in zip(info_cards, titles, descrips):
-        # import ipdb
-        # ipdb.set_trace()
         plan = make_plan(card, title, description)
         if plan is not None:
             result.append(asdict(plan))
@@ -143,7 +130,5 @@ def main():
         json.dump(result, file, ensure_ascii=False,
                   indent=2)
 
-
-# __ - dunders`
 if __name__ == '__main__':
     main()
